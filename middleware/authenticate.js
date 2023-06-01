@@ -7,7 +7,7 @@ const authenticate=(req,res,next)=>{
     
     if(token){
         const decode=jwt.verify(token,"masai");
-        const userId=decode.userID
+        const userId=decode.userId
         if(decode){
           req.body.userId=userId
             next()
