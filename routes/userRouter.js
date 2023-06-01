@@ -61,19 +61,5 @@ userRouter.post("/login",async(req,res)=>{
         
     }
 })
-weatherRouter.get("/history",authenticate,async(req,res)=>{
-    const userId=req.body.userId
-    try {
-        const history=await saveModal.find({userId});
-        if(history[0].userId==userId){
-            res.status(200).json(history)
-        }else{
-            res.json({"msg":"you are not authorized"});
-        }
-    
-    
-    } catch (error) {
-        res.status(404).json("Error in finding history")
-    }
-})
+
 module.exports={userRouter}

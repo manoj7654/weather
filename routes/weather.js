@@ -25,13 +25,28 @@ weatherRouter.get("/location",async(req,res)=>{
 })
 
 weatherRouter.post("/save",authenticate,async(req,res)=>{
-    const {location,temp,userID}=req.body
+    const {location,temp,userId}=req.body
     try {
-        const result=new saveModal({location,temp,userID});
+        const result=new saveModal({location,temp,userId});
         await result.save();
         res.status(200).json("History has been saved")
     } catch (error) {
         res.status(404).json("Getting error while saving history")
+    }
+})
+weatherRouter.get("/history",authenticate,async(req,res)=>{
+    const userId=req.body.userId
+    try {
+        const history=await saveModal.find({userId});
+        if(history[0].userId==userId){
+            res.status(200).json(history)
+        }else{
+            res.json({"msg":"you are not authorized"});
+        }
+    
+    
+    } catch (error) {
+        res.status(404).json("Error in finding history")
     }
 })
 module.exports={weatherRouter}
